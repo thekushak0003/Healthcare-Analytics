@@ -27,7 +27,6 @@ def st_shap(plot, height=None):
 def load_artifacts():
     """
     Loads all necessary model artifacts from disk using caching for efficiency.
-    This version now loads the .joblib model file as specified.
     """
     # Load the XGBoost model from the .joblib file
     model = joblib.load('xgb_model.joblib')
@@ -149,8 +148,7 @@ if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
         st.markdown("**How this prediction was made:**")
         shap_values = explainer.shap_values(input_final)
         
-        # FINAL FIX: Use the processed data (input_final) for the 'features' argument
-        # to ensure the dimensions match the 'shap_values' and prevent the error.
+        # Use the processed data for the 'features' argument to ensure dimension consistency
         force_plot = shap.force_plot(
             base_value=explainer.expected_value,
             shap_values=shap_values[0,:],
