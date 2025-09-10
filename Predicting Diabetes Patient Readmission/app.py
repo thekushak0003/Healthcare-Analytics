@@ -61,7 +61,8 @@ def get_user_input():
     st.sidebar.subheader("Demographics")
     inputs['race'] = st.sidebar.selectbox('Race', ['Caucasian', 'AfricanAmerican', 'Hispanic', 'Asian', 'Other'])
     inputs['gender'] = st.sidebar.selectbox('Gender', ['Male', 'Female'])
-    inputs['age'] = st.sidebar.selectbox('Age Group', ['[0-10)', '[10-20)', '[20-30)', '[30-40)', '[40-50)', '[50-60)', '[70-80)', '[80-90)', '[90-100)'])
+    # RELIABILITY FIX 1: Added the missing '[60-70)' age category to ensure all patient groups can be tested.
+    inputs['age'] = st.sidebar.selectbox('Age Group', ['[0-10)', '[10-20)', '[20-30)', '[30-40)', '[40-50)', '[50-60)', '[60-70)', '[70-80)', '[80-90)', '[90-100)'])
 
     st.sidebar.subheader("Hospitalization Details")
     inputs['admission_type'] = st.sidebar.selectbox('Admission Type', ['Emergency', 'Urgent', 'Elective', 'Newborn', 'Not Available', 'Trauma Center'])
@@ -117,15 +118,14 @@ def process_input(input_df, model_feature_names):
     
     return final_input
 
-# THE FIX: Get user input from the sidebar BEFORE the button is checked.
-# This captures the user's selections on every script rerun.
+# Get user input from the sidebar BEFORE the button is checked.
 input_df = get_user_input()
 
 # --- Display Prediction and Interpretation ---
 st.subheader('Prediction Analysis')
 if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
     # Process the input that was already captured from the user's selections.
-    input_final = process_input(input_df, feature_names) # Pass the correct feature names
+    input_final = process_input(input_df, feature_names)
     
     prediction_proba = model.predict_proba(input_final)[:, 1][0]
     
@@ -142,14 +142,16 @@ if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
 
     with col2:
         st.markdown("**How this prediction was made:**")
-        # Ensure SHAP gets the correctly named features
-        shap_values_input = input_final.copy()
-        shap_values_input.columns = feature_names
+        shap_values = explainer.shap_values(input_final)
         
-        shap_values = explainer.shap_values(shap_values_input)
-        
-        # Generate the plot object
-        force_plot = shap.force_plot(explainer.expected_value, shap_values[0,:], shap_values_input.iloc[0,:], link="logit", matplotlib=False)
+        # RELIABILITY FIX 2: Use the processed input (input_final) for the plot features.
+        # This ensures the explanation is technically accurate and matches what the model used.
+        force_plot = shap.force_plot(
+            base_value=explainer.expected_value,
+            shap_values=shap_values[0,:],
+            features=input_final.iloc[0,:], # Use the processed features for a reliable explanation
+            link="logit"
+        )
         
         # Use the helper function to display the plot
         st_shap(force_plot, height=160)
@@ -162,7 +164,9 @@ if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
         )
 
     with st.expander("Show Raw Patient Data"):
-        st.dataframe(input_df.T.rename(columns={0: 'Value'}))
+        # Convert all values to string before displaying to avoid serialization warnings.
+        display_df = input_df.T.rename(columns={0: 'Value'}).astype(str)
+        st.dataframe(display_df)
 else:
     st.info("Please fill in the patient details and click 'Analyze Patient Risk' to generate a prediction.")
 
