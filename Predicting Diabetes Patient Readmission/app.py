@@ -4,6 +4,7 @@ import numpy as np
 import joblib
 import shap
 import streamlit.components.v1 as components
+import xgboost as xgb
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -25,21 +26,26 @@ def st_shap(plot, height=None):
 @st.cache_resource
 def load_artifacts():
     """
-    Loads all the necessary model artifacts from disk using caching for efficiency.
+    Loads all necessary model artifacts from disk using caching for efficiency.
+    This version now loads the .joblib model file as specified.
     """
+    # Load the XGBoost model from the .joblib file
     model = joblib.load('xgb_model.joblib')
+    
+    # Load the other artifacts saved with joblib
     encoder = joblib.load('one_hot_encoder.joblib')
     numerical_features = joblib.load('numerical_features.joblib')
     categorical_features = joblib.load('categorical_features.joblib')
     explainer = joblib.load('shap_explainer.joblib')
-    # Get the feature names from the trained model itself for a perfect match.
+    
+    # Get the feature names directly from the trained model itself for a perfect match.
     model_feature_names = model.get_booster().feature_names
     return model, encoder, model_feature_names, numerical_features, categorical_features, explainer
 
 try:
     model, encoder, feature_names, numerical_features, categorical_features, explainer = load_artifacts()
-except FileNotFoundError:
-    st.error("Model artifacts not found! Please ensure all .joblib files (including shap_explainer.joblib) are present.")
+except (FileNotFoundError, Exception) as e:
+    st.error(f"Error loading model artifacts: {e}. Please ensure all .joblib files are present and not corrupted.")
     st.stop()
 
 # --- Application UI ---
@@ -61,7 +67,6 @@ def get_user_input():
     st.sidebar.subheader("Demographics")
     inputs['race'] = st.sidebar.selectbox('Race', ['Caucasian', 'AfricanAmerican', 'Hispanic', 'Asian', 'Other'])
     inputs['gender'] = st.sidebar.selectbox('Gender', ['Male', 'Female'])
-    # RELIABILITY FIX 1: Added the missing '[60-70)' age category to ensure all patient groups can be tested.
     inputs['age'] = st.sidebar.selectbox('Age Group', ['[0-10)', '[10-20)', '[20-30)', '[30-40)', '[40-50)', '[50-60)', '[60-70)', '[70-80)', '[80-90)', '[90-100)'])
 
     st.sidebar.subheader("Hospitalization Details")
@@ -144,16 +149,15 @@ if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
         st.markdown("**How this prediction was made:**")
         shap_values = explainer.shap_values(input_final)
         
-        # RELIABILITY FIX 2: Use the processed input (input_final) for the plot features.
-        # This ensures the explanation is technically accurate and matches what the model used.
+        # FINAL FIX: Use the processed data (input_final) for the 'features' argument
+        # to ensure the dimensions match the 'shap_values' and prevent the error.
         force_plot = shap.force_plot(
             base_value=explainer.expected_value,
             shap_values=shap_values[0,:],
-            features=input_final.iloc[0,:], # Use the processed features for a reliable explanation
+            features=input_final.iloc[0,:], 
             link="logit"
         )
         
-        # Use the helper function to display the plot
         st_shap(force_plot, height=160)
         
         st.markdown(
@@ -164,7 +168,7 @@ if st.sidebar.button('**Analyze Patient Risk**', use_container_width=True):
         )
 
     with st.expander("Show Raw Patient Data"):
-        # Convert all values to string before displaying to avoid serialization warnings.
+        # Convert all values to string to resolve the Arrow serialization warning.
         display_df = input_df.T.rename(columns={0: 'Value'}).astype(str)
         st.dataframe(display_df)
 else:
