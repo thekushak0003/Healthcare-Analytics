@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health-Intellect | Diabetes Risk Advisor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-heart-pulse-fill" viewBox="0 0 16 16">
+                  <path d="M1.475 9.066a.5.5 0 0 1 .585.159l.652.814L3.61 8.7a.5.5 0 0 1 .78-.07L5.232 10h.862a.5.5 0 0 1 .451.276l.934 1.868a.5.5 0 0 1 .053.434L6.223 14H5.5a.5.5 0 0 1-.464-.314l-.652-1.299L3.61 14H2.5a.5.5 0 0 1-.434-.748L5.05 9.472H4.5a.5.5 0 0 1-.475-.345L3.223 7.5h-.862a.5.5 0 0 1-.451-.276L.934 5.356a.5.5 0 0 1 .053-.434L2.723 3H3.5a.5.5 0 0 1 .464.314l.652 1.299L5.434 3H6.5a.5.5 0 0 1 .434.748L4.471 7.228H5.05a.5.5 0 0 1 .475.345l.652 1.472h.862a.5.5 0 0 1 .451.276l.934 1.868a.5.5 0 0 1 .053.434L8.223 14H7.5a.5.5 0 0 1-.464-.314l-.652-1.299L5.61 14H4.5a.5.5 0 0 1-.434-.748L6.05 9.472H5.5a.5.5 0 0 1-.475-.345L4.223 7.5h-.862a.5.5 0 0 1-.451-.276L1.934 5.356a.5.5 0 0 1 .053-.434L3.723 3H4.5a.5.5 0 0 1 .464.314l.652 1.299L6.434 3H7.5a.5.5 0 0 1 .434.748L5.971 7.228H6.5a.5.5 0 0 1 .475.345l.652 1.472H8.5a.5.5 0 0 1 0 1H8.223l1.542 2.312a.5.5 0 0 1-.434.748H8.5a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 0 1H11.5a.5.5 0 0 1 0-1h.223l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 0 1H14.5a.5.5 0 0 1 0-1h.723l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L12.971 7.228H13.5a.5.5 0 0 1 .475.345l.652 1.472H15.5a.5.5 0 0 1 0 1h-.223l1.542 2.312a.5.5 0 0 1-.434.748H15.5a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L15.971 7.228H16.5a.5.5 0 0 1 .475.345l.652 1.472H18.5a.5.5 0 0 1 0 1h-.223l1.542 2.312a.5.5 0 0 1-.434.748h-1.053a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L19.971 7.228H20.5a.5.5 0 0 1 .475.345l.652 1.472H22.5a.5.5 0 0 1 0 1h-.223l1.542 2.312a.5.5 0 0 1-.434.748h-1.053a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L23.971 7.228H24.5a.5.5 0 0 1 .475.345l.652 1.472H26.5a.5.5 0 0 1 0 1h-1.223l1.542 2.312a.5.5 0 0 1-.434.748h-1.053a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L27.971 7.228H28.5a.5.5 0 0 1 .475.345l.652 1.472H30.5a.5.5 0 0 1 0 1h-1.223l1.542 2.312a.5.5 0 0 1-.434.748h-1.053a.5.5 0 0 1 0-1h.223l-1.542-2.312a.5.5 0 0 1 .434-.748h.553l1.475 2.213a.5.5 0 0 1-.434.748h-1.553a.5.5 0 0 1 0-1h.223l-1.475-2.213a.5.5 0 0 1 .434-.748h1.553a.5.5 0 0 1 .434.748L31.971 7.228H32.5a.5.5 0 0 1 .475.345l.652 1.472z"/>
+                </svg>
+                <h2>Health-Intellect</h2>
+            </div>
+            <p>Enter your health indicators below to predict your diabetes risk.</p>
+        </header>
+
+        <form action="/predict" method="post">
+            <div class="form-grid">
+                <div class="form-group"><label for="GenHlth">General Health</label><input type="number" id="GenHlth" name="GenHlth" min="1" max="5" placeholder="1=Excellent, 5=Poor" required></div>
+                <div class="form-group"><label for="BMI">Body Mass Index (BMI)</label><input type="number" step="1" id="BMI" name="BMI" required placeholder="e.g., 28"></div>
+                <div class="form-group"><label for="Age">Age Category</label><input type="number" id="Age" name="Age" min="1" max="13" placeholder="1=18-24, 13=80+" required></div>
+                <div class="form-group"><label for="HighBP">High Blood Pressure</label><select id="HighBP" name="HighBP"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="HighChol">High Cholesterol</label><select id="HighChol" name="HighChol"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="HeartDiseaseorAttack">Heart Disease/Attack</label><select id="HeartDiseaseorAttack" name="HeartDiseaseorAttack"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="PhysHlth">Poor Physical Health Days</label><input type="number" id="PhysHlth" name="PhysHlth" min="0" max="30" placeholder="Days (0-30)"></div>
+                <div class="form-group"><label for="DiffWalk">Difficulty Walking</label><select id="DiffWalk" name="DiffWalk"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="Income">Income Level</label><input type="number" id="Income" name="Income" min="1" max="8" placeholder="1=Low, 8=High"></div>
+                <div class="form-group"><label for="PhysActivity">Physical Activity</label><select id="PhysActivity" name="PhysActivity"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="form-group"><label for="Smoker">Smoker</label><select id="Smoker" name="Smoker"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="Stroke">History of Stroke</label><select id="Stroke" name="Stroke"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="CholCheck">Cholesterol Check (5 Yrs)</label><select id="CholCheck" name="CholCheck"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="form-group"><label for="Fruits">Consumes Fruit Daily</label><select id="Fruits" name="Fruits"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="form-group"><label for="Veggies">Consumes Veggies Daily</label><select id="Veggies" name="Veggies"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="form-group"><label for="HvyAlcoholConsump">Heavy Alcohol Use</label><select id="HvyAlcoholConsump" name="HvyAlcoholConsump"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="AnyHealthcare">Has Healthcare</label><select id="AnyHealthcare" name="AnyHealthcare"><option value="1">Yes</option><option value="0">No</option></select></div>
+                <div class="form-group"><label for="NoDocbcCost">Dr Visit Cost Issue</label><select id="NoDocbcCost" name="NoDocbcCost"><option value="0">No</option><option value="1">Yes</option></select></div>
+                <div class="form-group"><label for="MentHlth">Poor Mental Health Days</label><input type="number" id="MentHlth" name="MentHlth" min="0" max="30" placeholder="Days (0-30)"></div>
+                <div class="form-group"><label for="Education">Education Level</label><input type="number" id="Education" name="Education" min="1" max="6" placeholder="1=None, 6=College Grad"></div>
+                <div class="form-group"><label for="Sex">Sex</label><select id="Sex" name="Sex"><option value="0">Female</option><option value="1">Male</option></select></div>
+            </div>
+            <button type="submit" class="btn">Calculate Risk</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result-section {{ risk_level }}">
+            <div class="result-header">Prediction Result</div>
+            <div class="result-value">{{ (probability * 100) | round(1) }}%</div>
+            <div class="result-text">{{ prediction_text }}</div>
+             <p class="disclaimer"><b>Disclaimer:</b> This is a prediction from a machine learning model and not a substitute for professional medical advice.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
